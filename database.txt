@@ -1,0 +1,46 @@
+CREATE TABLE Utente (
+    NumeroTessera SERIAL PRIMARY KEY,
+    Nome VARCHAR(255) NOT NULL,
+    Cognome VARCHAR(255) NOT NULL,
+    DataNascita DATE NOT NULL
+);
+
+CREATE TABLE Autore (
+    IDAutore SERIAL PRIMARY KEY,
+    Nome VARCHAR(255) NOT NULL,
+    Cognome VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE Genere (
+    IDGenere SERIAL PRIMARY KEY,
+    TitoloGenere VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Elemento (
+    CodiceISBN VARCHAR(13) PRIMARY KEY,
+    Titolo VARCHAR(255) NOT NULL,
+    AnnoPubblicazione INT NOT NULL,
+    NumeroPagine INT NOT NULL
+);
+
+CREATE TABLE Libro (
+    CodiceISBN VARCHAR(13) PRIMARY KEY REFERENCES Elemento(CodiceISBN),
+    IDAutore INT REFERENCES Autore(IDAutore),
+    IDGenere INT REFERENCES Genere(IDGenere)
+);
+
+CREATE TABLE Rivista (
+    CodiceISBN VARCHAR(13) PRIMARY KEY REFERENCES Elemento(CodiceISBN),
+    Periodicita VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE Prestito (
+    IDPrestito SERIAL PRIMARY KEY,
+    NumeroTesseraFk INT REFERENCES Utente(NumeroTessera),
+    CodiceISBNFK VARCHAR(13) REFERENCES Elemento(CodiceISBN),
+    DataInizioPrestito DATE NOT NULL,
+    DataRestituzionePrevista DATE NOT NULL,
+    DataRestituzioneEffettiva DATE
+);
